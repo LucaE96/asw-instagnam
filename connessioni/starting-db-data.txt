@@ -1,0 +1,6 @@
+{"follower":"Cristiano","followed":"Gennaro"}
+{"follower":"Gennaro","followed":"Cristiano"}
+{"follower":"Paolo","followed":"Cristiano"}
+{"follower":"Paolo","followed":"Gennaro"}
+{"follower":"Anna","followed":"Antonino"}
+{"follower":"Anna","followed":"Benedetta"}

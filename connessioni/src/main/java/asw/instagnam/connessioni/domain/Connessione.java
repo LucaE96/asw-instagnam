@@ -1,6 +1,6 @@
 package asw.instagnam.connessioni.domain;
 
-import javax.persistence.*; 
+import javax.persistence.*;
 
 import lombok.*; 
 
@@ -8,16 +8,16 @@ import lombok.*;
 @Data @NoArgsConstructor
 public class Connessione {
 
-	@Id 
-	@GeneratedValue
-	private Long id; 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private String follower; 
 	private String followed; 
 	
 	public Connessione(String follower, String followed) {
-		this(); 
-		this.follower = follower; 
-		this.followed = followed; 
+		this();
+		this.follower = follower;
+		this.followed = followed;
 	}
 	
 }

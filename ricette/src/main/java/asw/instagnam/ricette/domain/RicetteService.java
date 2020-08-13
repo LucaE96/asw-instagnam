@@ -2,21 +2,30 @@ package asw.instagnam.ricette.domain;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-import java.util.logging.Logger; 
+import asw.instagnam.api.events.ricette.RicettaCreataEvent;
+import asw.instagnam.ricette.messaging.RicetteEventNotifier;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import java.util.*; 
 
 @Service
+@Transactional
 public class RicetteService {
 
 	@Autowired
 	private RicetteRepository ricetteRepository;
+	
+	@Autowired
+	@Qualifier("kafkaRicetteEventNotifier")
+	private RicetteEventNotifier notifier;
 
  	public RicettaCompleta createRicetta(String autore, String titolo, String preparazione) {
 		RicettaCompleta ricetta = new RicettaCompleta(autore, titolo, preparazione); 
 		ricetta = ricetteRepository.save(ricetta);
+		notifier.notify(new RicettaCreataEvent(ricetta.getId(), ricetta.getAutore(), ricetta.getTitolo()));
 		return ricetta;
 	}
 

@@ -1,0 +1,5 @@
+{"autore":"Cristiano","titolo":"Panino al prosciutto","preparazione":"Metti il prosciutto nel panino"}
+{"autore":"Cristiano","titolo":"Pizza e mortazza","preparazione":"Metti la mortadella nella pizza"}
+{"autore":"Gennaro","titolo":"Tonno e fagioli","preparazione":"Unisci i fagioli con il tonno"}
+{"autore":"Antonino","titolo":"Pizza margherita","preparazione":"... e alla fine inforna"}
+{"autore":"Benedetta","titolo":"Tonno e fagioli","preparazione":"Unisci il tonno con i fagioli"}
