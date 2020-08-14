@@ -18,5 +18,3 @@ ASW course's 2019-2020 project (http://cabibbo.dia.uniroma3.it/asw/progetti/asw-
 	[	-> aggiunge una nuova ricetta di un nuovo autore, e vengono aggiunte due connessioni al nuovo autore]
 6) stop-all.sh
 	-> stop+rm dei contenitori in esecuzione
-	
-Le altre versioni del progetto (Docker Compose, Kubernetes) sono presenti negli altri branch.
