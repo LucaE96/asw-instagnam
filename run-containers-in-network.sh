@@ -2,7 +2,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 	# gets this script's directory
 
 
-docker run -d --network=asw-net --hostname localhost --name consul --publish 8500:8500 consul
+docker run -d --network=asw-net --name consul -p 8500:8500 consul
 docker run -d --network=asw-net --name api-gateway -p 8080:8080 api-gateway
 docker-compose -f "$DIR"/kafka/docker-compose.yml up -d
 docker run -d --network=asw-net --name ricetteseguite-db -v ricetteseguite-volume:/var/lib/postgresql/data ricetteseguite-db
