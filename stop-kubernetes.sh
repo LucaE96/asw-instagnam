@@ -1,0 +1,1 @@
+kubectl delete -f asw-instagnam.yaml

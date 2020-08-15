@@ -1,3 +1,10 @@
+#####################   NAMESPACE   #####################
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: asw-instagnam-ns
+---
 
 #####################   VOLUMES   #####################
 
@@ -5,6 +12,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: connessioni-volume
+  namespace: asw-instagnam-ns
   labels:
     type: local
 spec:
@@ -15,7 +23,7 @@ spec:
     - ReadWriteMany 
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-     namespace: default
+     namespace: asw-instagnam-ns
      name: connessioni-volume-claim
   hostPath:
     path: "/var/lib/docker/volumes/connessioni-volume/_data"
@@ -26,6 +34,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: ricette-volume
+  namespace: asw-instagnam-ns
   labels:
     type: local
 spec:
@@ -36,7 +45,7 @@ spec:
     - ReadWriteMany 
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-     namespace: default
+     namespace: asw-instagnam-ns
      name: ricette-volume-claim
   hostPath:
     path: "/var/lib/docker/volumes/ricette-volume/_data"
@@ -46,6 +55,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: ricetteseguite-volume
+  namespace: asw-instagnam-ns
   labels:
     type: local
 spec:
@@ -56,7 +66,7 @@ spec:
     - ReadWriteMany 
   persistentVolumeReclaimPolicy: Retain
   claimRef:
-     namespace: default
+     namespace: asw-instagnam-ns
      name: ricetteseguite-volume-claim
   hostPath:
     path: "/var/lib/docker/volumes/ricetteseguite-volume/_data"
@@ -68,6 +78,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: connessioni-volume-claim
+  namespace: asw-instagnam-ns
 spec:
   storageClassName: manual
   accessModes:
@@ -82,6 +93,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ricette-volume-claim
+  namespace: asw-instagnam-ns
 spec:
   storageClassName: manual
   accessModes:
@@ -96,6 +108,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ricetteseguite-volume-claim
+  namespace: asw-instagnam-ns
 spec:
   storageClassName: manual
   accessModes:
@@ -112,6 +125,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-gateway-dpl
+  namespace: asw-instagnam-ns
 spec:
   replicas: 1
   selector:
@@ -135,6 +149,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: connessioni-dpl
+  namespace: asw-instagnam-ns
 spec:
   replicas: 1
   selector:
@@ -158,6 +173,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ricette-dpl
+  namespace: asw-instagnam-ns
 spec:
   replicas: 1
   selector:
@@ -181,6 +197,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ricetteseguite-dpl
+  namespace: asw-instagnam-ns
 spec:
   replicas: 1
   selector:
@@ -204,6 +221,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: zookeeper-dpl
+  namespace: asw-instagnam-ns
 spec:
   replicas: 1
   selector:
@@ -227,6 +245,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kafka-dpl
+  namespace: asw-instagnam-ns
 spec:
   replicas: 1
   selector:
@@ -258,6 +277,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: connessioni-db-dpl
+  namespace: asw-instagnam-ns
 spec:
   replicas: 1
   selector:
@@ -289,6 +309,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ricette-db-dpl
+  namespace: asw-instagnam-ns
 spec:
   replicas: 1
   selector:
@@ -319,6 +340,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ricetteseguite-db-dpl
+  namespace: asw-instagnam-ns
 spec:
   replicas: 1
   selector:
@@ -351,6 +373,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: api-gateway-svc
+  namespace: asw-instagnam-ns
 spec:
   selector:
     app: asw-instagnam
@@ -367,6 +390,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: connessioni-svc
+  namespace: asw-instagnam-ns
 spec:
   selector:
     app: asw-instagnam
@@ -381,6 +405,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: ricette-svc
+  namespace: asw-instagnam-ns
 spec:
   selector:
     app: asw-instagnam
@@ -395,6 +420,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: ricetteseguite-svc
+  namespace: asw-instagnam-ns
 spec:
   selector:
     app: asw-instagnam
@@ -409,6 +435,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: zookeeper-svc
+  namespace: asw-instagnam-ns
 spec:
   selector:
     app: asw-instagnam
@@ -424,6 +451,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: kafka-svc
+  namespace: asw-instagnam-ns
 spec:
   selector:
     app: asw-instagnam
@@ -438,6 +466,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: connessioni-db-svc
+  namespace: asw-instagnam-ns
 spec:
   selector:
     app: asw-instagnam
@@ -452,6 +481,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: ricette-db-svc
+  namespace: asw-instagnam-ns
 spec:
   selector:
     app: asw-instagnam
@@ -466,6 +496,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: ricetteseguite-db-svc
+  namespace: asw-instagnam-ns
 spec:
   selector:
     app: asw-instagnam
@@ -482,6 +513,7 @@ kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
   name: api-gateway-ing
+  namespace: asw-instagnam-ns
 spec:
   rules:
   - host: instagnam 
