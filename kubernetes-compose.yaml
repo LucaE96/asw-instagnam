@@ -1,0 +1,493 @@
+
+#####################   VOLUMES   #####################
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: connessioni-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteMany 
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+     namespace: default
+     name: connessioni-volume-claim
+  hostPath:
+    path: "/var/lib/docker/volumes/connessioni-volume/_data"
+    # this should be the exact location of the docker volume
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ricette-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteMany 
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+     namespace: default
+     name: ricette-volume-claim
+  hostPath:
+    path: "/var/lib/docker/volumes/ricette-volume/_data"
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ricetteseguite-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteMany 
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+     namespace: default
+     name: ricetteseguite-volume-claim
+  hostPath:
+    path: "/var/lib/docker/volumes/ricetteseguite-volume/_data"
+---
+
+#####################   VOLUME CLAIMS   #####################
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: connessioni-volume-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany 
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: connessioni-volume
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ricette-volume-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany 
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: ricette-volume
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ricetteseguite-volume-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany 
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: ricetteseguite-volume
+---
+
+#####################   REPLICA SETS   #####################
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asw-instagnam
+      service: api-gateway
+  template: 
+    metadata:
+      labels:
+        app: asw-instagnam
+        service: api-gateway
+    spec:
+      containers:
+      - name: api-gateway
+        image: lucae96/api-gateway:latest
+        ports:
+        - containerPort: 8080
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connessioni-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asw-instagnam
+      service: connessioni
+  template: 
+    metadata:
+      labels:
+        app: asw-instagnam
+        service: connessioni
+    spec:
+      containers:
+      - name: connessioni
+        image: lucae96/connessioni:latest
+        ports:
+        - containerPort: 8080
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ricette-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asw-instagnam
+      service: ricette
+  template: 
+    metadata:
+      labels:
+        app: asw-instagnam
+        service: ricette
+    spec:
+      containers:
+      - name: ricette
+        image: lucae96/ricette:latest
+        ports:
+        - containerPort: 8080
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ricetteseguite-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asw-instagnam
+      service: ricetteseguite
+  template: 
+    metadata:
+      labels:
+        app: asw-instagnam
+        service: ricetteseguite
+    spec:
+      containers:
+      - name: ricetteseguite
+        image: lucae96/ricetteseguite:latest
+        ports:
+        - containerPort: 8080
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asw-instagnam
+      service: zookeeper
+  template: 
+    metadata:
+      labels:
+        app: asw-instagnam
+        service: zookeeper
+    spec:
+      containers:
+      - name: zookeeper
+        image: wurstmeister/zookeeper
+        ports:
+        - containerPort: 2181
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asw-instagnam
+      service: kafka
+  template: 
+    metadata:
+      labels:
+        app: asw-instagnam
+        service: kafka
+    spec:
+      containers:
+      - name: kafka
+        image: wurstmeister/kafka:latest
+        env:
+        - name: KAFKA_ADVERTISED_HOST_NAME
+          value: kafka
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: zookeeper:2181
+        - name: KAFKA_CREATE_TOPICS
+          value: "asw.instagnam.ricette.events:4:1,asw.instagnam.connessioni.events:4:1"
+        ports:
+        - containerPort: 9092
+         
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connessioni-db-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asw-instagnam
+      service: connessioni-db
+  template: 
+    metadata:
+      labels:
+        app: asw-instagnam
+        service: connessioni-db
+    volumes:
+    - name: connessioni-storage
+      persistentVolumeClaim:
+        claimName: connessioni-volume-claim
+    spec:
+      containers:
+      - name: connessioni-db
+        image: lucae96/connessioni-db:latest
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: connessioni-storage
+          
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ricette-db-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asw-instagnam
+      service: ricette-db
+  template: 
+    metadata:
+      labels:
+        app: asw-instagnam
+        service: ricette-db
+    volumes:
+    - name: ricette-storage
+      persistentVolumeClaim:
+        claimName: ricette-volume-claim
+    spec:
+      containers:
+      - name: ricette-db
+        image: lucae96/ricette-db:latest
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: ricette-storage
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ricetteseguite-db-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asw-instagnam
+      service: ricetteseguite-db
+  template: 
+    metadata:
+      labels:
+        app: asw-instagnam
+        service: ricetteseguite-db
+    volumes:
+    - name: ricetteseguite-storage
+      persistentVolumeClaim:
+        claimName: ricetteseguite-volume-claim
+    spec:
+      containers:
+      - name: ricetteseguite-db
+        image: lucae96/ricetteseguite-db:latest
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: ricetteseguite-storage
+---
+
+#####################   SERVICES   #####################
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: api-gateway-svc
+spec:
+  selector:
+    app: asw-instagnam
+    service: api-gateway
+  # type: NodePort
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: connessioni-svc
+spec:
+  selector:
+    app: asw-instagnam
+    service: connessioni
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: ricette-svc
+spec:
+  selector:
+    app: asw-instagnam
+    service: ricette
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: ricetteseguite-svc
+spec:
+  selector:
+    app: asw-instagnam
+    service: ricetteseguite
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: zookeeper-svc
+spec:
+  selector:
+    app: asw-instagnam
+    service: zookeeper
+  ports:
+  - protocol: TCP
+    port: 2181
+    targetPort: 2181
+---
+
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: kafka-svc
+spec:
+  selector:
+    app: asw-instagnam
+    service: kafka
+  ports:
+  - protocol: TCP
+    port: 2181
+    targetPort: 2181
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: connessioni-db-svc
+spec:
+  selector:
+    app: asw-instagnam
+    service: connessioni-db
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: ricette-db-svc
+spec:
+  selector:
+    app: asw-instagnam
+    service: ricette-db
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: ricetteseguite-db-svc
+spec:
+  selector:
+    app: asw-instagnam
+    service: ricetteseguite-db
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+---
+
+#####################   INGRESS   #####################
+
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: api-gateway-ing
+spec:
+  rules:
+  - host: instagnam 
+    http: 
+      paths: 
+      - path: /
+        backend: 
+          serviceName: api-gateway
+          servicePort: 8080 

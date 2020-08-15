@@ -11,6 +11,8 @@ Autore: Luca Emili
 
 Le modalità Contenitori in Rete e Docker Compose sono presenti nel branch master [https://github.com/LucaE96/asw-instagnam/tree/master]
 
+NB: per accedere ai servizi di questa modalità gli url sono del tipo: http://localhost:8080/instagnam/<servizio>
+
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Kubernetes

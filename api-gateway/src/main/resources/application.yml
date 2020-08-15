@@ -4,19 +4,19 @@ spring:
   application: 
     name: api-gateway
   cloud:
-    consul:
-      host: consul
-      #host: localhost
-      port: 8500
-      discovery: 
-        instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${random.value}
-        healthCheckPath: /actuator/health
-        healthCheckInterval: 10s
-        # configurazione per effettuare esprimenti, NON USARE UN PRODUZIONE 
-        # dopo quanto tempo consul deve smettere di restituire servizi che non rispondono all'health check? 
-        healthCheckCriticalTimeout: 60s
-        # consul deve restituire solo servizi che passano l'health check (default=false) 
-        queryPassing: true 
+    # consul:
+    #   host: consul
+    #   #host: localhost
+    #   port: 8500
+    #   discovery: 
+    #     instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${random.value}
+    #     healthCheckPath: /actuator/health
+    #     healthCheckInterval: 10s
+    #     # configurazione per effettuare esprimenti, NON USARE UN PRODUZIONE 
+    #     # dopo quanto tempo consul deve smettere di restituire servizi che non rispondono all'health check? 
+    #     healthCheckCriticalTimeout: 60s
+    #     # consul deve restituire solo servizi che passano l'health check (default=false) 
+    #     queryPassing: true 
     loadbalancer: 
       ribbon.enabled: false 
     # spring cloud gateway routes 
@@ -29,19 +29,22 @@ spring:
           enabled: false
       routes:
       - id: ricette_seguite_route
-        uri: lb://ricette-seguite
+        # uri: lb://ricette-seguite
+        uri: http://ricette-seguite:8080
         predicates:
         - Path=/ricette-seguite/**
         filters:
         - StripPrefix=1
       - id: ricette_route
-        uri: lb://ricette
+        # uri: lb://ricette
+        uri: http://ricette:8080
         predicates:
         - Path=/ricette/**
         filters:
         - StripPrefix=1
       - id: connessioni_route
-        uri: lb://connessioni
+        # uri: lb://connessioni
+        uri: http://connessioni:8080
         predicates:
         - Path=/connessioni/**
         filters:
