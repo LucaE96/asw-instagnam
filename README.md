@@ -9,7 +9,20 @@ Autore: Luca Emili
 
 3 modalità diverse di orchestrazione dei contenitori del progetto: Contenitori in Rete, Docker Compose, Kubernetes.
 
+
+NB: per garantire l'idempotenza delle operazioni sono stati aggiunti dei vincoli di integrità (del tipo UNIQUE(x,y)) nelle relazioni
+
+NB: per accedere ai servizi di queste modalità gli url sono del tipo:
+
+http://localhost:8080/ricette/ricette
+
+http://localhost:8080/connessioni/connessioni
+
+http://localhost:8080/ricette-seguite/ricetteseguite
+
+
 La modalità Kubernetes è presente nel branch kubernetes [https://github.com/LucaE96/asw-instagnam/tree/kubernetes]
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -34,6 +47,7 @@ La modalità Kubernetes è presente nel branch kubernetes [https://github.com/Lu
 7a - stop-containers-in-network.sh  [stop+rm dei contenitori in esecuzione]
 
 7b - stop-containers-in-network-multinode.sh
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
