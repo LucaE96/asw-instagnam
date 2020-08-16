@@ -2,8 +2,12 @@
 --- 
 spring: 
   application: 
-    name: ricette-seguite
+    name: ricetteseguite
   cloud:
+    kubernetes: 
+      discovery: 
+        enabled: true 
+        service-name: ${spring.application.name}
     # consul:
     #   host: consul
     #   #host: localhost
