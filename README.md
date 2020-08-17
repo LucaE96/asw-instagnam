@@ -14,11 +14,11 @@ NB: per garantire l'idempotenza delle operazioni sono stati aggiunti dei vincoli
 
 NB: per accedere ai servizi di questa modalità gli url sono del tipo: 
 
-http://instagnam/ricette
+http://instagnam/ricette/ricette
 
-http://instagnam/connessioni
+http://instagnam/connessioni/connessioni
 
-http://instagnam/ricetteseguite
+http://instagnam/ricette-seguite/ricetteseguite
 
 Le modalità Contenitori in Rete e Docker Compose sono presenti nel branch master [https://github.com/LucaE96/asw-instagnam/tree/master]
 
@@ -29,7 +29,7 @@ Le modalità Contenitori in Rete e Docker Compose sono presenti nel branch maste
 
 1 - settare l'ambiente per eseguire il cluster kubernetes
 
-   1.1 - a seconda dell'ambiente, potrebbe essere necessario far partire in kubernetes un controller nginx, per poter esporre gli ingress dell'applicazione
+   1.1 - a seconda dell'ambiente potrebbe essere necessario far partire in kubernetes un controller nginx, per poter esporre gli ingress dell'applicazione
 
 2 - run-kubernetes.sh  [le immagini utilizzate sono pubbliche e già presenti in Docker Hub]
 

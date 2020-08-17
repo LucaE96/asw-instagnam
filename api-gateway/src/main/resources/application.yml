@@ -34,7 +34,7 @@ spring:
       routes:
       - id: ricette_seguite_route
         # uri: lb://ricette-seguite
-        uri: http://ricette-seguite:8080
+        uri: http://ricetteseguite:8080
         predicates:
         - Path=/ricette-seguite/**
         filters:
