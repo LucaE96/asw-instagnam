@@ -9,6 +9,7 @@ Autore: Luca Emili
 
 3 modalità diverse di orchestrazione dei contenitori del progetto: Contenitori in Rete, Docker Compose, Kubernetes.
 
+NB: non sono riuscito a tirare su l'ambiente kube-cluster; l'applicazione è stata testata utilizzando Minikube (https://kubernetes.io/docs/setup/learning-environment/minikube/), su Windows 10 Pro.
 
 NB: per garantire l'idempotenza delle operazioni sono stati aggiunti dei vincoli di integrità (del tipo UNIQUE(x,y)) nelle relazioni
 
